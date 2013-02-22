@@ -425,11 +425,11 @@ namespace CodeEditor.Collections
 				var positionInPiece = _position - pieceStart;
 				var parts = _piece.SplitAt(positionInPiece);
 				var replacementPieces = new[]
-        {
-		PieceSpan.For(parts.First, pieceStart),
-		_table.NewSpanWith(_value, _position),
-		PieceSpan.For(parts.Second, _position + 1)
-        };
+				{
+					PieceSpan.For(parts.First, pieceStart),
+					_table.NewSpanWith(_value, _position),
+					PieceSpan.For(parts.Second, _position + 1)
+				};
 				return _table.ReplacePieceSpan(_pieceIndex, replacementPieces);
 			}
 		}
