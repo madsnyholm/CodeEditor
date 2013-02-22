@@ -1,6 +1,8 @@
+using System;
+
 namespace CodeEditor.Text.Data
 {
-	public interface ITextBuffer
+	public interface ITextBuffer : IPropertyOwner
 	{
 		IContentType ContentType { get; }
 		ITextSnapshot CurrentSnapshot { get; }
@@ -9,6 +11,7 @@ namespace CodeEditor.Text.Data
 		void Delete(int start, int length);
 
 		event TextChange Changed;
+		void RevertTo(ITextSnapshot textSnapshot);
 	}
 
 	public static class ITextBufferExtensions

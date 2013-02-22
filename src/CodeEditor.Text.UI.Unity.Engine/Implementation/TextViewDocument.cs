@@ -72,6 +72,11 @@ namespace CodeEditor.Text.UI.Unity.Engine.Implementation
 			_document.Save();
 		}
 
+		public void Undo()
+		{
+			_document.Undo();
+		}
+
 		public int LineCount
 		{
 			get { return Buffer.CurrentSnapshot.Lines.Count; }

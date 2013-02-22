@@ -27,5 +27,45 @@ namespace CodeEditor.Text.Data.Implementation
 		{
 			_file.WriteAllText(_buffer.CurrentSnapshot.Text);
 		}
+
+		public void Undo()
+		{
+			new UndoServiceFactory().ForTextBuffer(_buffer).Undo();
+		}
+	}
+
+	public class UndoServiceFactory
+	{
+		public IUndoService ForTextBuffer(ITextBuffer textBuffer)
+		{
+			return textBuffer.Properties.GetOrCreateSingletonProperty<IUndoService>(() => (IUndoService)new UndoService(textBuffer));
+		}
+
+		private class UndoService : IUndoService
+		{
+			private readonly ITextBuffer _textBuffer;
+			private ITextSnapshot _lastSnapshot;
+
+			public UndoService(ITextBuffer TextBuffer)
+			{
+				_textBuffer = TextBuffer;
+				_textBuffer.Changed += new TextChange(_textBuffer_Changed);
+			}
+
+			void _textBuffer_Changed(object sender, TextChangeArgs args)
+			{
+				_lastSnapshot = args.OldSnapshot;
+			}
+
+			public void Undo()
+			{
+				_textBuffer.RevertTo(_lastSnapshot);
+			}
+		}
+	}
+
+	public interface IUndoService
+	{
+		void Undo();
 	}
 }

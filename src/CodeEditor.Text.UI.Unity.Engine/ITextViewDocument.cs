@@ -12,6 +12,7 @@ namespace CodeEditor.Text.UI.Unity.Engine
 		ITextBuffer Buffer { get; }
 		IFile File { get; }
 		void Save();
+		void Undo();
 	}
 
 	public static class TextViewDocumentExtensions

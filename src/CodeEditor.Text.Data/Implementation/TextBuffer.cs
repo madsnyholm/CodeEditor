@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using CodeEditor.Collections;
+using CodeEditor.Text.Data;
 
 namespace CodeEditor.Text.Data.Implementation
 {
@@ -11,6 +13,7 @@ namespace CodeEditor.Text.Data.Implementation
 		{
 			ContentType = contentType;
 			_currentSnapshot = new TextSnapshot(this, PieceTable.ForPiece(text));
+			Properties = new PropertyCollection();
 		}
 
 		public TextBuffer(string text, IContentType contentType)
@@ -26,6 +29,8 @@ namespace CodeEditor.Text.Data.Implementation
 		{
 			get { return _currentSnapshot; }
 		}
+
+		public IPropertyCollection Properties { get; private set; }
 
 		public void Insert(int index, string item)
 		{
@@ -50,6 +55,13 @@ namespace CodeEditor.Text.Data.Implementation
 			OnChanged(_currentSnapshot.Delete(index, amount), new Span(index, 0), new Span(index, amount));
 		}
 
+		public void RevertTo(ITextSnapshot textSnapshot)
+		{
+			if (textSnapshot == null)
+				throw new ArgumentNullException();
+			OnChanged((TextSnapshot) textSnapshot, new Span(0, textSnapshot.Length), new Span(0, CurrentSnapshot.Length));
+		}
+
 		private void OnChanged(TextSnapshot newSnapshot, Span newSpan, Span oldSpan)
 		{
 			var oldSnapshot = _currentSnapshot;
@@ -61,6 +73,25 @@ namespace CodeEditor.Text.Data.Implementation
 		private static string NormalizeLineTerminators(string text)
 		{
 			return text.Replace("\r\n", "\n");
+		}
+	}
+
+	public class PropertyCollection : IPropertyCollection
+	{
+		Dictionary<RuntimeTypeHandle, object> _singletonProperties = new Dictionary<RuntimeTypeHandle, object>();
+
+		public T GetOrCreateSingletonProperty<T>(Func<T> func)
+		{
+			lock (_singletonProperties)
+			{
+				var propertyKey = typeof(T).TypeHandle;
+				object existingProperty;
+				if (_singletonProperties.TryGetValue(propertyKey, out existingProperty))
+					return (T) existingProperty;
+				var newProperty = func();
+				_singletonProperties.Add(propertyKey, newProperty);
+				return newProperty;
+			}
 		}
 	}
 }

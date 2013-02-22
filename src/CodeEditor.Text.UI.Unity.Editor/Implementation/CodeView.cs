@@ -191,7 +191,9 @@ namespace CodeEditor.Text.UI.Unity.Editor.Implementation
 			ScrollStart,
 			ScrollEnd,
 			ScrollPageUp,
-			ScrollPageDown
+			ScrollPageDown, 
+			Undo,
+			Redo
 		};
 
 		private bool HandleKeyEvent(Event e)
@@ -499,6 +501,13 @@ namespace CodeEditor.Text.UI.Unity.Editor.Implementation
 					//case TextEditOp.ScrollPageDown: return ScrollPageDown(); break;
 					//case TextEditOp.DeleteWordBack: return DeleteWordBack(); // break; // The uncoditional return makes the "break;" issue a warning about unreachable code
 					//case TextEditOp.DeleteWordForward: return DeleteWordForward(); // break; // The uncoditional return makes the "break;" issue a warning about unreachable code
+				case TextEditOp.Undo:
+					Undo();
+					break;
+				//case TextEditOp.Redo:
+					/*Redo();*/
+					//break;
+
 				default:
 					Debug.Log("Unimplemented: " + operation);
 					break;
@@ -510,8 +519,8 @@ namespace CodeEditor.Text.UI.Unity.Editor.Implementation
 			s_Keyactions[Event.KeyboardEvent(key)] = action;
 		}
 
-		/// Set up a platform independant keyboard->Edit action map. This varies depending on whether we are on mac or windows.
-		/// Info: # is shift, % is command, ^ is control, & is alt
+		// Set up a platform independant keyboard->Edit action map. This varies depending on whether we are on mac or windows.
+		// Info: # is shift, % is command, ^ is control, & is alt
 		private void InitKeyActions()
 		{
 			if(s_Keyactions != null)
@@ -532,6 +541,8 @@ namespace CodeEditor.Text.UI.Unity.Editor.Implementation
 			MapKey("delete", TextEditOp.Delete);
 			MapKey("backspace", TextEditOp.Backspace);
 			MapKey("#backspace", TextEditOp.Backspace);
+			MapKey("^u", TextEditOp.Undo);
+			MapKey("#^u", TextEditOp.Redo);
 
 			if(Application.platform != RuntimePlatform.WindowsPlayer && Application.platform != RuntimePlatform.WindowsWebPlayer &&
 			   Application.platform != RuntimePlatform.WindowsEditor)
@@ -678,6 +689,11 @@ namespace CodeEditor.Text.UI.Unity.Editor.Implementation
 				for(int i = 0; i < pasteText.Length; ++i)
 					Caret.MoveRight();
 			}
+		}
+
+		private void Undo()
+		{
+			_document.Undo();
 		}
 
 		public void ReplaceSelection(string replace)

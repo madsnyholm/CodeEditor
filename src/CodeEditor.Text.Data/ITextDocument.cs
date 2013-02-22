@@ -12,5 +12,6 @@ namespace CodeEditor.Text.Data
 		IFile File { get; }
 		ITextBuffer Buffer { get; }
 		void Save();
+		void Undo();
 	}
 }
