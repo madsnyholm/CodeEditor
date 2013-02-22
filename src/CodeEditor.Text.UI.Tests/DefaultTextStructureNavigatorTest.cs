@@ -68,7 +68,7 @@ namespace CodeEditor.Text.UI.Tests
 
 		TextSpan TextSpan(int start, int length)
 		{
-			return CurrentSnapshot.GetSpan(start, length);
+			return CurrentSnapshot.GetTextSpan(start, length);
 		}
 	}
 }

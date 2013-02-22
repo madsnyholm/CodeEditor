@@ -9,16 +9,21 @@
 		ITextSnapshotLines Lines { get; }
 
 		string GetText(Span span);
-		TextSpan GetSpan(int position, int length);
+		TextSpan GetTextSpan(int position, int length);
 		int LineNumberForPosition(int position);
 		string GetText(int start, int length);
 	}
 
 	public static class TextSnapshotExtensions
 	{
-		public static TextSpan GetSpan(this ITextSnapshot snapshot, Span span)
+		public static TextSpan GetTextSpan(this ITextSnapshot snapshot, Span span)
 		{
-			return snapshot.GetSpan(span.Start, span.Length);
+			return snapshot.GetTextSpan(span.Start, span.Length);
+		}
+
+		public static TextSpan GetTextSpan(this ITextSnapshot snapshot)
+		{
+			return snapshot.GetTextSpan(0, snapshot.Length);
 		}
 	}
 }

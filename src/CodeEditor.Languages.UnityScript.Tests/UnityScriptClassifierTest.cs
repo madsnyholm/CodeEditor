@@ -159,7 +159,7 @@ namespace CodeEditor.Languages.Tests
 
 		private ClassificationSpan ClassificationSpan(int position, int length, IClassification classification)
 		{
-			return new ClassificationSpan(classification, Buffer.CurrentSnapshot.GetSpan(position, length));
+			return new ClassificationSpan(classification, Buffer.CurrentSnapshot.GetTextSpan(position, length));
 		}
 
 		private void AssertClassificationsOf(ITextSnapshotLine line, params ClassificationSpan[] expected)

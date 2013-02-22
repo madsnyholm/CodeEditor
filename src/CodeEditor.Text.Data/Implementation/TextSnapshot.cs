@@ -56,7 +56,7 @@ namespace CodeEditor.Text.Data.Implementation
 			return GetText(span.Start, span.Length);
 		}
 
-		public TextSpan GetSpan(int position, int length)
+		public TextSpan GetTextSpan(int position, int length)
 		{
 			return new TextSpan(this, new Span(position, length));
 		}

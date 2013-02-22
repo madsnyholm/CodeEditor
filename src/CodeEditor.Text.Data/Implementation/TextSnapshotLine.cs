@@ -25,7 +25,7 @@ namespace CodeEditor.Text.Data.Implementation
 
 		public TextSpan ExtentIncludingLineBreak
 		{
-			get { return Snapshot.GetSpan(Start, LengthIncludingLineBreak); }
+			get { return Snapshot.GetTextSpan(Start, LengthIncludingLineBreak); }
 		}
 
 		private int LengthIncludingLineBreak
@@ -50,7 +50,7 @@ namespace CodeEditor.Text.Data.Implementation
 
 		public TextSpan Extent
 		{
-			get { return Snapshot.GetSpan(Start, Length); }
+			get { return Snapshot.GetTextSpan(Start, Length); }
 		}
 
 		public int End

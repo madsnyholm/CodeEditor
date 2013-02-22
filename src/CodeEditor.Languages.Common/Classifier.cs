@@ -91,7 +91,7 @@ namespace CodeEditor.Languages.Common
 
 		private ClassificationSpan ClassificationSpanFor(Token token, ITextSnapshot textBuffer, int offset)
 		{
-			var textSpan = textBuffer.GetSpan(offset + token.Begin, token.End - token.Begin);
+			var textSpan = textBuffer.GetTextSpan(offset + token.Begin, token.End - token.Begin);
 			return new ClassificationSpan(ClassificationFor(token, textSpan), textSpan);
 		}
 
