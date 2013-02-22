@@ -7,7 +7,7 @@ namespace CodeEditor.Text.UI.Unity.Engine.Implementation
 	class TextViewMarginsFactory : ITextViewMarginsFactory
 	{
 		[ImportMany]
-		ITextViewMarginProvider[] _textViewMarginProviders;
+		public ITextViewMarginProvider[] _textViewMarginProviders {get; set;}
 
 		public ITextViewMargins MarginsFor(ITextView textView)
 		{

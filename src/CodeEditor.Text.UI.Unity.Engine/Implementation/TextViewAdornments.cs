@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CodeEditor.Composition;
+﻿using CodeEditor.Composition;
 using UnityEngine;
 
 namespace CodeEditor.Text.UI.Unity.Engine.Implementation
@@ -10,7 +6,8 @@ namespace CodeEditor.Text.UI.Unity.Engine.Implementation
 	[Export(typeof(ITextViewAdornments))]
 	class TextViewAdornments : ITextViewAdornments
 	{
-		[ImportMany] private ITextViewAdornment[] _adornments;
+		[ImportMany] 
+		public ITextViewAdornment[] _adornments {get; set;}
 
 		public void Draw(ITextViewLine line, Rect lineRect)
 		{
